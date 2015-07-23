@@ -44,9 +44,18 @@
     else
         self.phoneLbl.text = self.airline.phone;
     if ([_airline.site isEqualToString:@""])
+    {
         self.siteLbl.text = @"N/A";
+        [self.siteLbl setUserInteractionEnabled:NO];
+    }
     else
+    {
         self.siteLbl.text = self.airline.site;
+        UITapGestureRecognizer* gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userTappedOnLink:)];
+        // if labelView is not set userInteractionEnabled, you must do so
+        [self.siteLbl setUserInteractionEnabled:YES];
+        [self.siteLbl addGestureRecognizer:gesture];
+    }
     
     self.imgView.image = self.airline.imgLogo;
     
@@ -138,6 +147,10 @@
 
 
 
+-(void)userTappedOnLink:(UIGestureRecognizer *)gesture
+{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://%@",self.airline.site]]];
 
+}
 
 @end
